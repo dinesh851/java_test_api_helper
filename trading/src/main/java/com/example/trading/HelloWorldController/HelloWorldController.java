@@ -88,7 +88,7 @@ public class HelloWorldController {
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/endpoint2")
     public String endpoint2 () {
-        String secretKey = "52P5M54237Q7A763654424AC556Q22S4";
+        String secretKey = " ";
 
         // Create a new instance of GoogleAuthenticator
         GoogleAuthenticator gAuth = new GoogleAuthenticator();
@@ -100,18 +100,103 @@ public class HelloWorldController {
         return totpTokenString ;
     }
 
-    @PostMapping("/endpoint3")
-    public String endpoint3() {
-        return "Endpoint 3";
+   
+    public void placeOrder(String buyOrSell, String productType, String exchange, String tradingSymbol, int quantity, int discloseQty,
+                           String priceType, double price, Double triggerPrice, String retention, String amo, String remarks,
+                           double bookLossPrice, double bookProfitPrice, double trailPrice) {
+
+        // prepare the uri
+        String url = config.get("host") + config.get("routes").get("placeorder");
+        reportMsg(url);
+
+        // prepare the data
+        Map<String, String> values = new HashMap<>();
+        values.put("ordersource", "API");
+        values.put("uid", this.username);
+        values.put("actid", this.accountId);
+        values.put("trantype", buyOrSell);
+        values.put("prd", productType);
+        values.put("exch", exchange);
+        values.put("tsym", tradingSymbol);
+        values.put("qty", String.valueOf(quantity));
+        values.put("dscqty", String.valueOf(discloseQty));
+        values.put("prctyp", priceType);
+        values.put("prc", String.valueOf(price));
+        values.put("trgprc", triggerPrice != null ? String.valueOf(triggerPrice) : null);
+        values.put("ret", retention);
+        values.put("remarks", remarks);
+        values.put("amo", amo);
+
+        // ... (other parts of the code)
+
     }
 
-    @GetMapping("/endpoint4")
-    public String endpoint4() {
-        return "Endpoint 4";
+    public void modifyOrder(String orderNo, String exchange, String tradingSymbol, int newQuantity,
+                            String newPriceType, double newPrice, Double newTriggerPrice, double bookLossPrice,
+                            double bookProfitPrice, double trailPrice) {
+
+        // prepare the uri
+        String url = config.get("host") + config.get("routes").get("modifyorder");
+        System.out.println(url);
+
+        // prepare the data
+        Map<String, String> values = new HashMap<>();
+        values.put("ordersource", "API");
+        values.put("uid", this.username);
+        values.put("actid", this.accountId);
+        values.put("norenordno", orderNo);
+        values.put("exch", exchange);
+        values.put("tsym", tradingSymbol);
+        values.put("qty", String.valueOf(newQuantity));
+        values.put("prctyp", newPriceType);
+        values.put("prc", String.valueOf(newPrice));
+
+        // ... (other parts of the code)
+
     }
 
-    @PostMapping("/endpoint5")
-    public String endpoint5() {
-        return "Endpoint 5";
+    public void cancelOrder(String orderNo) {
+
+        // prepare the uri
+        String url = config.get("host") + config.get("routes").get("cancelorder");
+        System.out.println(url);
+
+        // prepare the data
+        Map<String, String> values = new HashMap<>();
+        values.put("ordersource", "API");
+        values.put("uid", this.username);
+        values.put("norenordno", orderNo);
+
+        // ... (other parts of the code)
+
+    }
+
+    public void exitOrder(String orderNo, String productType) {
+
+        // prepare the uri
+        String url = config.get("host") + config.get("routes").get("exitorder");
+        System.out.println(url);
+
+        // prepare the data
+        Map<String, String> values = new HashMap<>();
+        values.put("ordersource", "API");
+        values.put("uid", this.username);
+        values.put("norenordno", orderNo);
+        values.put("prd", productType);
+
+        // ... (other parts of the code)
+
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/hello")
+    public String helloWorld() {
+        return "{\"message\": \"java, World!\"}";
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/endpoint1")
+    public String endpoint1() {
+        // Implement your logic here.
     }
 }
